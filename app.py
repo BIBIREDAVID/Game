@@ -82,5 +82,23 @@ def get_quiz(quiz_id):
     questions = [{"id": q.id, "text": q.text, "choices": q.choices.split(",")} for q in quiz.questions]
     return jsonify({"quiz_id": quiz.id, "title": quiz.title, "questions": questions})
 
+#Endpoint: Fetch All Quizzes
+@app.route('/api/quizzes', methods=['GET'])
+def get_all_quizzes():
+    quizzes = Quiz.query.all()
+    quizzes_data = [{"id": quiz.id, "title": quiz.title} for quiz in quizzes]
+    return jsonify({"quizzes": quizzes_data})
+
+#Endpoint: Submit Quiz Answers
+@app.route('/api/quizzes/<int:quiz_id>/submit', methods=['POST'])
+def submit_quiz_answers(quiz_id):
+    quiz = Quiz.query.get_or_404(quiz_id)
+    data = request.json
+    score = 0
+    for question in quiz.questions:
+        if str(question.id) in data and data[str(question.id)] == question.correct_answer:
+            score += 1
+    return jsonify({"quiz_id": quiz_id, "score": score})
+
 if __name__ == '__main__':
     app.run(debug=True)
