@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{ quiz.title }}</h2>
+<form method="POST">
+    {% for question in quiz.questions %}
+    <div class="question">
+        <p>{{ loop.index }}. {{ question.text }}</p>
+        {% for choice in question.choices.split(',') %}
+        <input type="radio" id="q{{ question.id }}_{{ loop.index }}" name="{{ question.id }}" value="{{ choice }}">
+        <label for="q{{ question.id }}_{{ loop.index }}">{{ choice }}</label><br>
+        {% endfor %}
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn">Submit</button>
+</form>
+{% endblock %}

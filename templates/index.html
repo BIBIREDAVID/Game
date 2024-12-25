@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Welcome to the Quiz App</h1>
+{% if current_user.is_authenticated %}
+<p>Hello, {{ current_user.username }}! Ready to test your knowledge?</p>
+<a href="{{ url_for('quiz') }}" class="btn">Take a Quiz</a>
+{% else %}
+<p>Log in or register to start taking quizzes.</p>
+<a href="{{ url_for('login') }}" class="btn">Login</a>
+<a href="{{ url_for('register') }}" class="btn">Register</a>
+{% endif %}
+{% endblock %}
